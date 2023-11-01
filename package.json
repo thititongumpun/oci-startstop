@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "tsnd --respawn src/main.ts",
-    "start": "node dist/main.mjs",
-    "build": "rimraf dist && tsc --project ./",
+    "start": "node dist/main.js",
+    "build": "rimraf dist && tsc",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",

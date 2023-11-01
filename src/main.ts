@@ -15,5 +15,3 @@ app.all('/*', (_, res: Response) => {
 app.listen(port, () => {
   console.log(`Application is running on port ${port}`);
 });
-
-export const ociApp = app;
