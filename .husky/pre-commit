@@ -3,5 +3,5 @@
 
 pnpm format:check
 pnpm format:write
-pnpm link:check
+pnpm lint:check
 pnpm lint:fix
