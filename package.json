@@ -16,9 +16,9 @@
     "add-build": "git add dist"
   },
   "pre-commit": [
-		"build",
-		"add-build"
-	],
+    "build",
+    "add-build"
+  ],
   "keywords": [],
   "author": "thiti_t@mfec.co.th",
   "license": "ISC",
@@ -36,6 +36,7 @@
     "eslint-plugin-n": "^15.0.0 || ^16.0.0 ",
     "eslint-plugin-promise": "^6.0.0",
     "husky": "^8.0.3",
+    "pre-commit": "^1.2.2",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "ts-node-dev": "^2.0.0",
