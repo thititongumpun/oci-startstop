@@ -32,26 +32,26 @@ const data = instances
   .filter((line) => line.startsWith('- '))
   .map((line) => line.split('- ')[1]);
 
-async function getListAllInstances(compartmentId: string) {
-  for await (const instance of computeClient.listAllInstances({
-    compartmentId: compartmentId,
-  })) {
-    console.log(
-      `${instance.displayName} [${instance.id}] current status is ${instance.lifecycleState}`
-    );
-  }
-}
+// async function getListAllInstances(compartmentId: string) {
+//   for await (const instance of computeClient.listAllInstances({
+//     compartmentId: compartmentId,
+//   })) {
+//     console.log(
+//       `${instance.displayName} [${instance.id}] current status is ${instance.lifecycleState}`
+//     );
+//   }
+// }
 
 export const initCronJob = () => {
   const cronjob = cron.schedule(
     '* * * * *',
     async () => {
-      // await computeClient.instanceAction({
-      //   instanceId: "ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq",
-      //   action: core.requests.InstanceActionRequest.Action.Start
-      // })
+      await computeClient.instanceAction({
+        instanceId: "ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq",
+        action: core.requests.InstanceActionRequest.Action.Stop
+      })
       // console.log();
-      await getListAllInstances(process.env.COMPARTMENTID as string);
+      // await getListAllInstances(process.env.COMPARTMENTID as string);
 
       console.log('data', data);
     },
