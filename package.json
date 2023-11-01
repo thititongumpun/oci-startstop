@@ -5,9 +5,9 @@
   "main": "main.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsnd --respawn src/main.ts",
+    "dev": "vite",
     "start": "node dist/main.js",
-    "build": "rimraf dist && tsc --project ./",
+    "build": "vite build",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
@@ -32,7 +32,9 @@
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
     "ts-node-dev": "^2.0.0",
-    "typescript": "*"
+    "typescript": "*",
+    "vite": "^4.5.0",
+    "vite-plugin-node": "^3.0.2"
   },
   "dependencies": {
     "dotenv": "^16.3.1",

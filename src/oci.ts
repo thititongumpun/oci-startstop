@@ -44,7 +44,7 @@ async function getListAllInstances(compartmentId: string) {
 
 export const initCronJob = () => {
   const cronjob = cron.schedule(
-    '0 * * * *',
+    '* * * * *',
     async () => {
       // await computeClient.instanceAction({
       //   instanceId: "ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq",
