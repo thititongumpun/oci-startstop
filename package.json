@@ -12,8 +12,13 @@
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
     "lint:fix": "eslint --fix .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "add-build": "git add dist"
   },
+  "pre-commit": [
+		"build",
+		"add-build"
+	],
   "keywords": [],
   "author": "thiti_t@mfec.co.th",
   "license": "ISC",
