@@ -1,16 +1,23 @@
-import express, { Express, Response } from 'express';
 // import { initCronJob } from './oci';
+import Koa from "koa";
+import Router from 'koa-router';
 import { config } from 'dotenv';
 config();
 
 // initCronJob();
 
-const app: Express = express();
+// const app: Express = express();
 const port = process.env.PORT || 3000;
 
-app.all('/*', (_, res: Response) => {
-  res.send('Healthy.');
+const app = new Koa();
+const router: Router = new Router();
+
+router.get('/', async (ctx: Koa.Context) => {
+  ctx.body = 'Healthy. Koa';
 });
+
+app.use(router.routes());
+
 
 app.listen(port, () => {
   console.log(`Application is running on port ${port}`);
