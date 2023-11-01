@@ -1,14 +1,14 @@
 import express, { Express, Response } from 'express';
-import { initCronJob } from './oci';
+// import { initCronJob } from './oci';
 import { config } from 'dotenv';
 config();
 
-initCronJob();
+// initCronJob();
 
 const app: Express = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
-app.get('/', (_, res: Response) => {
+app.all('/*', (_, res: Response) => {
   res.send('Healthy.');
 });
 
