@@ -1,9 +1,9 @@
 import express, { Express, Response } from 'express';
-import { initCronJob } from './oci';
+// import { initCronJob } from './oci';
 import { config } from 'dotenv';
 config();
 
-initCronJob();
+// initCronJob();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
