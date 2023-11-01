@@ -42,8 +42,8 @@ export default defineConfig({
       // }
       // }
       // swc configs, see [swc doc](https://swc.rs/docs/configuration/swcrc)
-      swcOptions: {}
-    })
+      swcOptions: {},
+    }),
   ],
   optimizeDeps: {
     // Vite does not work well with optionnal dependencies,
@@ -59,6 +59,6 @@ export default defineConfig({
     // ],
   },
   build: {
-    ssr: false
-  }
+    ssr: false,
+  },
 });

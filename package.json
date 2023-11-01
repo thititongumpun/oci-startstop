@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "vite",
-    "start": "node dist/main.js",
+    "start": "node dist/main.mjs",
     "build": "vite build",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
