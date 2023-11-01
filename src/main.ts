@@ -1,5 +1,5 @@
 // import { initCronJob } from './oci';
-import Koa from "koa";
+import Koa from 'koa';
 import Router from 'koa-router';
 import { config } from 'dotenv';
 config();
@@ -17,7 +17,6 @@ router.get('/', async (ctx: Koa.Context) => {
 });
 
 app.use(router.routes());
-
 
 app.listen(port, () => {
   console.log(`Application is running on port ${port}`);
