@@ -32,7 +32,7 @@ router.get('/start', async (ctx: Koa.Context) => {
       sgOCI.getWorkerRequestClient(),
       sgOCI.getWaiterConfiguration()
     );
-    
+
   for (const instance of sgInstances) {
     const getInstanceRequest: core.requests.GetInstanceRequest = {
       instanceId: instance,
