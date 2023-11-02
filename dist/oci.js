@@ -44,8 +44,10 @@ exports.computeClient = new oci_sdk_1.core.ComputeClient({
 });
 const maxTimeInSeconds = 60 * 60; // The duration for waiter configuration before failing. Currently set to 1 hour.
 const maxDelayInSeconds = 30; // The max delay for the waiter configuration. Currently set to 30 seconds
-exports.workRequestClient = new oci_workrequests_1.WorkRequestClient({ authenticationDetailsProvider: provider });
+exports.workRequestClient = new oci_workrequests_1.WorkRequestClient({
+    authenticationDetailsProvider: provider,
+});
 exports.waiterConfiguration = {
     terminationStrategy: new oci_sdk_1.common.MaxTimeTerminationStrategy(maxTimeInSeconds),
-    delayStrategy: new oci_sdk_1.common.ExponentialBackoffDelayStrategy(maxDelayInSeconds)
+    delayStrategy: new oci_sdk_1.common.ExponentialBackoffDelayStrategy(maxDelayInSeconds),
 };

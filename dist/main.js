@@ -25,7 +25,8 @@ router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     ctx.body = `Healthy. ${new Date().toString()} asdasd`;
     const res = yield fetch('https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md');
     const text = yield res.text();
-    const instances = text.split('\n')
+    const instances = text
+        .split('\n')
         .filter((line) => line.startsWith('- '))
         .map((line) => line.split('- ')[1]);
     const computeWaiter = oci_1.computeClient.createWaiters(oci_1.workRequestClient, oci_1.waiterConfiguration);
@@ -35,7 +36,7 @@ router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
             action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
         });
         const getInstanceRequest = {
-            instanceId: instance
+            instanceId: instance,
         };
         yield computeWaiter.forInstance(getInstanceRequest, oci_sdk_1.core.models.Instance.LifecycleState.Starting);
     }
