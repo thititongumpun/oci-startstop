@@ -41,28 +41,16 @@ router.get('/', async (ctx: Koa.Context) => {
       core.models.Instance.LifecycleState.Stopped
     );
 
-    console.log(getInstanceResponse?.instance.lifecycleState);
-
-    if (
-      getInstanceResponse?.instance.lifecycleState ===
+    getInstanceResponse?.instance.lifecycleState ===
       core.models.Instance.LifecycleState.Stopped
-    ) {
-      await sgOCI.getComputeClient().instanceAction({
+      ? await sgOCI.getComputeClient().instanceAction({
         instanceId: instance,
         action: core.requests.InstanceActionRequest.Action.Start,
-      });
-    }
-
-    getInstanceResponse?.instance.lifecycleState ===
-    core.models.Instance.LifecycleState.Stopped
-      ? await sgOCI.getComputeClient().instanceAction({
-          instanceId: instance,
-          action: core.requests.InstanceActionRequest.Action.Start,
-        })
+      })
       : await sgOCI.getComputeClient().instanceAction({
-          instanceId: instance,
-          action: core.requests.InstanceActionRequest.Action.Stop,
-        });
+        instanceId: instance,
+        action: core.requests.InstanceActionRequest.Action.Stop,
+      });
   }
 
   ctx.body = `Process Done. ${new Date().toString()}`;

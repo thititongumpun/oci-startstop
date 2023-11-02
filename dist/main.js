@@ -44,22 +44,16 @@ router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
             instanceId: instance,
         };
         const getInstanceResponse = yield computeWaiter.forInstance(getInstanceRequest, oci_sdk_1.core.models.Instance.LifecycleState.Stopped);
-        console.log(getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState);
-        if ((getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState) ===
-            oci_sdk_1.core.models.Instance.LifecycleState.Stopped) {
-            yield sgOCI.getComputeClient().instanceAction({
+        (getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState) ===
+            oci_sdk_1.core.models.Instance.LifecycleState.Stopped
+            ? yield sgOCI.getComputeClient().instanceAction({
                 instanceId: instance,
                 action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
+            })
+            : yield sgOCI.getComputeClient().instanceAction({
+                instanceId: instance,
+                action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
             });
-        }
-        (getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState) ===
-            oci_sdk_1.core.models.Instance.LifecycleState.Stopped ? yield sgOCI.getComputeClient().instanceAction({
-            instanceId: instance,
-            action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
-        }) : yield sgOCI.getComputeClient().instanceAction({
-            instanceId: instance,
-            action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
-        });
     }
     ctx.body = `Process Done. ${new Date().toString()}`;
 }));
