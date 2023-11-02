@@ -16,7 +16,7 @@
   "crons": [
     {
       "path": "/dist/main",
-      "schedule": "08 08 * * *"
+      "schedule": "15 08 * * *"
     }
   ]
 }
