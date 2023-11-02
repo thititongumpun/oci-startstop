@@ -27,7 +27,7 @@ router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     ctx.body = `Healthy. ${new Date().toString()}`;
     yield oci_1.computeClient.instanceAction({
         instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
+        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
     });
 }));
 app.use(router.routes());

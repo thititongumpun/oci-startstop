@@ -18,7 +18,7 @@ router.get('/', async (ctx: Koa.Context) => {
   await computeClient.instanceAction({
     instanceId:
       'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-    action: core.requests.InstanceActionRequest.Action.Start,
+    action: core.requests.InstanceActionRequest.Action.Stop,
   });
 });
 
