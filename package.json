@@ -42,10 +42,5 @@
     "koa-router": "^12.0.1",
     "node-cron": "^3.0.2",
     "oci-sdk": "^2.73.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pnpm build:vercel && git add dist"
-    }
   }
 }

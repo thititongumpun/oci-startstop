@@ -5,4 +5,3 @@ pnpm format:write
 pnpm lint:fix
 pnpm format:check
 pnpm lint:check
-pnpm build:vercel

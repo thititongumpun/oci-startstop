@@ -30,6 +30,14 @@ router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
     });
 }));
+router.get('/raw', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    const data = yield fetch('https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md?token=GHSAT0AAAAAACIPPH7W3MNZHZ5FSYKCDK2AZKDFOOA');
+    const text = yield data.text();
+    ctx.body = text
+        .split('\n')
+        .filter((line) => line.startsWith('- '))
+        .map((line) => line.split('- ')[1]);
+}));
 app.use(router.routes());
 app.listen(port, () => {
     console.log(`Application is running on port ${port}`);
