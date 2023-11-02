@@ -52,7 +52,6 @@ config();
 //   authenticationDetailsProvider: provider,
 // });
 
-
 // export const workRequestClient = new WorkRequestClient({
 //   authenticationDetailsProvider: provider,
 // });
@@ -115,15 +114,19 @@ A2Ss1Jt96Ctmk59n4RS9/3iswasFMzoqJ44RbJ0EurC1SpInhPeO
       authenticationDetailsProvider: provider,
     });
     this.waiterConfiguration = {
-      terminationStrategy: new common.MaxTimeTerminationStrategy(this.maxTimeInSeconds),
-      delayStrategy: new common.ExponentialBackoffDelayStrategy(this.maxDelayInSeconds),
+      terminationStrategy: new common.MaxTimeTerminationStrategy(
+        this.maxTimeInSeconds
+      ),
+      delayStrategy: new common.ExponentialBackoffDelayStrategy(
+        this.maxDelayInSeconds
+      ),
     };
   }
 
   public getComputeClient() {
     return this.computeClient;
   }
-  
+
   public getWorkerRequestClient() {
     return this.workRequestClient;
   }

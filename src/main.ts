@@ -26,10 +26,13 @@ router.get('/start', async (ctx: Koa.Context) => {
 
   const sgOCI = new Oci(common.Region.AP_SINGAPORE_1);
 
-  const computeWaiter = sgOCI.getComputeClient().createWaiters(
-    sgOCI.getWorkerRequestClient(),
-    sgOCI.getWaiterConfiguration()
-  );
+  const computeWaiter = sgOCI
+    .getComputeClient()
+    .createWaiters(
+      sgOCI.getWorkerRequestClient(),
+      sgOCI.getWaiterConfiguration()
+    );
+    
   for (const instance of sgInstances) {
     const getInstanceRequest: core.requests.GetInstanceRequest = {
       instanceId: instance,
@@ -40,7 +43,10 @@ router.get('/start', async (ctx: Koa.Context) => {
       core.models.Instance.LifecycleState.Stopped
     );
 
-    if (getInstanceResponse?.instance.lifecycleState === core.models.Instance.LifecycleState.Stopped) {
+    if (
+      getInstanceResponse?.instance.lifecycleState ===
+      core.models.Instance.LifecycleState.Stopped
+    ) {
       await sgOCI.getComputeClient().instanceAction({
         instanceId: instance,
         action: core.requests.InstanceActionRequest.Action.Start,
@@ -51,20 +57,25 @@ router.get('/start', async (ctx: Koa.Context) => {
 
 router.get('/status', async (ctx: Koa.Context) => {
   const instances = [];
-  const region = ctx.query.region === "tokyo" ? common.Region.AP_TOKYO_1 : common.Region.AP_SINGAPORE_1
+  const region =
+    ctx.query.region === 'tokyo'
+      ? common.Region.AP_TOKYO_1
+      : common.Region.AP_SINGAPORE_1;
   const oci = new Oci(region);
 
-  for await (const instance of oci.getComputeClient().listAllInstances({ compartmentId: process.env.COMPARTMENTID as string })) {
+  for await (const instance of oci
+    .getComputeClient()
+    .listAllInstances({ compartmentId: process.env.COMPARTMENTID as string })) {
     instances.push({
       displayName: instance.displayName,
       instanceId: instance.id,
-      lifecycleState: instance.lifecycleState
-    })
+      lifecycleState: instance.lifecycleState,
+    });
   }
 
   ctx.body = {
-    instances: instances
-  }
+    instances: instances,
+  };
 });
 
 app.use(router.routes());
