@@ -1,7 +1,9 @@
-// import { initCronJob } from './oci';
 import Koa from 'koa';
 import Router from 'koa-router';
 import { config } from 'dotenv';
+import { computeClient } from './oci';
+import { core } from 'oci-sdk';
+// import { initCronJob } from './oci';
 config();
 
 // initCronJob();
@@ -13,6 +15,11 @@ const router: Router = new Router();
 
 router.get('/', async (ctx: Koa.Context) => {
   ctx.body = `Healthy. Koa ${process.env.TENANCY || ''}`;
+  await computeClient.instanceAction({
+    instanceId:
+      'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
+    action: core.requests.InstanceActionRequest.Action.Stop,
+  });
 });
 
 app.use(router.routes());

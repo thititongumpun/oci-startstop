@@ -1,6 +1,6 @@
 import { common, core } from 'oci-sdk';
-import { readFileSync } from 'fs';
-import cron from 'node-cron';
+// import { readFileSync } from 'fs';
+// import cron from 'node-cron';
 import { config } from 'dotenv';
 config();
 
@@ -50,15 +50,15 @@ const provider = new common.SimpleAuthenticationDetailsProvider(
   region
 );
 
-// const computeClient = new core.ComputeClient({
-//   authenticationDetailsProvider: provider,
-// });
+export const computeClient = new core.ComputeClient({
+  authenticationDetailsProvider: provider,
+});
 
-const instances = readFileSync('./README.md', { encoding: 'utf8' });
-const data = instances
-  .split('\n')
-  .filter((line) => line.startsWith('- '))
-  .map((line) => line.split('- ')[1]);
+// const instances = readFileSync('./README.md', { encoding: 'utf8' });
+// const data = instances
+//   .split('\n')
+//   .filter((line) => line.startsWith('- '))
+//   .map((line) => line.split('- ')[1]);
 
 // async function getListAllInstances(compartmentId: string) {
 //   for await (const instance of computeClient.listAllInstances({
@@ -70,22 +70,22 @@ const data = instances
 //   }
 // }
 
-export const initCronJob = () => {
-  const cronjob = cron.schedule(
-    '* * * * *',
-    async () => {
-      // await computeClient.instanceAction({
-      //   instanceId:
-      //     'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-      //   action: core.requests.InstanceActionRequest.Action.Stop,
-      // });
-      // console.log();
-      // await getListAllInstances(process.env.COMPARTMENTID as string);
+// export const initCronJob = () => {
+//   const cronjob = cron.schedule(
+//     '* * * * *',
+//     async () => {
+//       await computeClient.instanceAction({
+//         instanceId:
+//           'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
+//         action: core.requests.InstanceActionRequest.Action.Stop,
+//       });
+//       // console.log();
+//       // await getListAllInstances(process.env.COMPARTMENTID as string);
 
-      console.log('data', data);
-    },
-    { timezone: 'Asia/Bangkok' }
-  );
+//       // console.log('data', data);
+//     },
+//     { timezone: 'Asia/Bangkok' }
+//   );
 
-  cronjob.start();
-};
+//   cronjob.start();
+// };
