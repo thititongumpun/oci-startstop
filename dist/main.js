@@ -28,8 +28,7 @@ const oci_sdk_1 = require("oci-sdk");
 const port = process.env.PORT || 3000;
 const app = new koa_1.default();
 const router = new koa_router_1.default();
-router.get('/start', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    ctx.body = `Healthy. ${new Date().toString()}`;
+router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     const res = yield fetch('https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md');
     const text = yield res.text();
     const sgInstances = text
@@ -45,6 +44,7 @@ router.get('/start', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
             instanceId: instance,
         };
         const getInstanceResponse = yield computeWaiter.forInstance(getInstanceRequest, oci_sdk_1.core.models.Instance.LifecycleState.Stopped);
+        console.log(getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState);
         if ((getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState) ===
             oci_sdk_1.core.models.Instance.LifecycleState.Stopped) {
             yield sgOCI.getComputeClient().instanceAction({
@@ -52,7 +52,16 @@ router.get('/start', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
                 action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
             });
         }
+        (getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState) ===
+            oci_sdk_1.core.models.Instance.LifecycleState.Stopped ? yield sgOCI.getComputeClient().instanceAction({
+            instanceId: instance,
+            action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
+        }) : yield sgOCI.getComputeClient().instanceAction({
+            instanceId: instance,
+            action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
+        });
     }
+    ctx.body = `Process Done. ${new Date().toString()}`;
 }));
 router.get('/status', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, e_1, _b, _c;

@@ -11,9 +11,7 @@ const port = process.env.PORT || 3000;
 const app = new Koa();
 const router: Router = new Router();
 
-router.get('/start', async (ctx: Koa.Context) => {
-  ctx.body = `Healthy. ${new Date().toString()}`;
-
+router.get('/', async (ctx: Koa.Context) => {
   const res = await fetch(
     'https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md'
   );
@@ -43,6 +41,8 @@ router.get('/start', async (ctx: Koa.Context) => {
       core.models.Instance.LifecycleState.Stopped
     );
 
+    console.log(getInstanceResponse?.instance.lifecycleState)
+
     if (
       getInstanceResponse?.instance.lifecycleState ===
       core.models.Instance.LifecycleState.Stopped
@@ -52,7 +52,18 @@ router.get('/start', async (ctx: Koa.Context) => {
         action: core.requests.InstanceActionRequest.Action.Start,
       });
     }
+
+    getInstanceResponse?.instance.lifecycleState ===
+      core.models.Instance.LifecycleState.Stopped ? await sgOCI.getComputeClient().instanceAction({
+        instanceId: instance,
+        action: core.requests.InstanceActionRequest.Action.Start,
+      }) : await sgOCI.getComputeClient().instanceAction({
+        instanceId: instance,
+        action: core.requests.InstanceActionRequest.Action.Stop,
+      });
   }
+
+  ctx.body = `Process Done. ${new Date().toString()}`;
 });
 
 router.get('/status', async (ctx: Koa.Context) => {
