@@ -24,10 +24,10 @@ const port = process.env.PORT || 3000;
 const app = new koa_1.default();
 const router = new koa_router_1.default();
 router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    ctx.body = `Healthy. Koa ${process.env.TENANCY || ''}`;
+    ctx.body = `Healthy. ${new Date().toString()}`;
     yield oci_1.computeClient.instanceAction({
         instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
+        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
     });
 }));
 app.use(router.routes());

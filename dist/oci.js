@@ -80,7 +80,7 @@ const initCronJob = () => {
         });
         // console.log();
         // await getListAllInstances(process.env.COMPARTMENTID as string);
-        console.log("job start");
+        console.log('job start');
         // console.log('data', data);
     }), { timezone: 'Asia/Bangkok' });
     cronjob.start();
