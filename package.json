@@ -8,6 +8,7 @@
     "dev": "tsnd --respawn src/main.ts",
     "start": "node dist/main.js",
     "build": "rimraf dist && tsc",
+    "build:vercel": "rimraf dist && tsc",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
     "lint:check": "eslint .",
@@ -41,5 +42,10 @@
     "koa-router": "^12.0.1",
     "node-cron": "^3.0.2",
     "oci-sdk": "^2.73.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pnpm build:vercel && git add dist"
+    }
   }
 }
