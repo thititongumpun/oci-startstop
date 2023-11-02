@@ -22,14 +22,26 @@ const port = process.env.PORT || 3000;
 const app = new koa_1.default();
 const router = new koa_router_1.default();
 router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    ctx.body = `Healthy. ${new Date().toString()}`;
-    yield oci_1.computeClient.instanceAction({
-        instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
-    });
+    ctx.body = `Healthy. ${new Date().toString()} asdasd`;
+    const res = yield fetch('https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md');
+    const text = yield res.text();
+    const instances = text.split('\n')
+        .filter((line) => line.startsWith('- '))
+        .map((line) => line.split('- ')[1]);
+    const computeWaiter = oci_1.computeClient.createWaiters(oci_1.workRequestClient, oci_1.waiterConfiguration);
+    for (const instance of instances) {
+        yield oci_1.computeClient.instanceAction({
+            instanceId: instance,
+            action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
+        });
+        const getInstanceRequest = {
+            instanceId: instance
+        };
+        yield computeWaiter.forInstance(getInstanceRequest, oci_sdk_1.core.models.Instance.LifecycleState.Starting);
+    }
 }));
 router.get('/raw', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    const data = yield fetch('https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md?token=GHSAT0AAAAAACIPPH7W3MNZHZ5FSYKCDK2AZKDFOOA');
+    const data = yield fetch('https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md');
     const text = yield data.text();
     ctx.body = text
         .split('\n')

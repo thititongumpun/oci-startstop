@@ -1,6 +1,6 @@
 import { common, core } from 'oci-sdk';
-import cron from 'node-cron';
 import { config } from 'dotenv';
+import { WorkRequestClient } from 'oci-workrequests';
 config();
 
 const tenancy = process.env.TENANCY || '';
@@ -50,18 +50,11 @@ export const computeClient = new core.ComputeClient({
   authenticationDetailsProvider: provider,
 });
 
-export const initCronJob = () => {
-  const cronjob = cron.schedule(
-    '* * * * *',
-    async () => {
-      await computeClient.instanceAction({
-        instanceId:
-          'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-        action: core.requests.InstanceActionRequest.Action.Start,
-      });
-    },
-    { timezone: 'Asia/Bangkok' }
-  );
+const maxTimeInSeconds = 60 * 60; // The duration for waiter configuration before failing. Currently set to 1 hour.
+const maxDelayInSeconds = 30; // The max delay for the waiter configuration. Currently set to 30 seconds
 
-  cronjob.start();
+export const workRequestClient = new WorkRequestClient({ authenticationDetailsProvider: provider });
+export const waiterConfiguration: common.WaiterConfiguration = {
+  terminationStrategy: new common.MaxTimeTerminationStrategy(maxTimeInSeconds),
+  delayStrategy: new common.ExponentialBackoffDelayStrategy(maxDelayInSeconds)
 };

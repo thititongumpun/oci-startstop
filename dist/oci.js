@@ -1,21 +1,9 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initCronJob = exports.computeClient = void 0;
+exports.waiterConfiguration = exports.workRequestClient = exports.computeClient = void 0;
 const oci_sdk_1 = require("oci-sdk");
-const node_cron_1 = __importDefault(require("node-cron"));
 const dotenv_1 = require("dotenv");
+const oci_workrequests_1 = require("oci-workrequests");
 (0, dotenv_1.config)();
 const tenancy = process.env.TENANCY || '';
 const user = process.env.USER || '';
@@ -54,13 +42,10 @@ const provider = new oci_sdk_1.common.SimpleAuthenticationDetailsProvider(tenanc
 exports.computeClient = new oci_sdk_1.core.ComputeClient({
     authenticationDetailsProvider: provider,
 });
-const initCronJob = () => {
-    const cronjob = node_cron_1.default.schedule('* * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
-        yield exports.computeClient.instanceAction({
-            instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-            action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
-        });
-    }), { timezone: 'Asia/Bangkok' });
-    cronjob.start();
+const maxTimeInSeconds = 60 * 60; // The duration for waiter configuration before failing. Currently set to 1 hour.
+const maxDelayInSeconds = 30; // The max delay for the waiter configuration. Currently set to 30 seconds
+exports.workRequestClient = new oci_workrequests_1.WorkRequestClient({ authenticationDetailsProvider: provider });
+exports.waiterConfiguration = {
+    terminationStrategy: new oci_sdk_1.common.MaxTimeTerminationStrategy(maxTimeInSeconds),
+    delayStrategy: new oci_sdk_1.common.ExponentialBackoffDelayStrategy(maxDelayInSeconds)
 };
-exports.initCronJob = initCronJob;
