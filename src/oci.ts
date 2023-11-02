@@ -1,6 +1,6 @@
 import { common, core } from 'oci-sdk';
 // import { readFileSync } from 'fs';
-// import cron from 'node-cron';
+import cron from 'node-cron';
 import { config } from 'dotenv';
 config();
 
@@ -70,22 +70,22 @@ export const computeClient = new core.ComputeClient({
 //   }
 // }
 
-// export const initCronJob = () => {
-//   const cronjob = cron.schedule(
-//     '* * * * *',
-//     async () => {
-//       await computeClient.instanceAction({
-//         instanceId:
-//           'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-//         action: core.requests.InstanceActionRequest.Action.Stop,
-//       });
-//       // console.log();
-//       // await getListAllInstances(process.env.COMPARTMENTID as string);
+export const initCronJob = () => {
+  const cronjob = cron.schedule(
+    '* * * * *',
+    async () => {
+      await computeClient.instanceAction({
+        instanceId:
+          'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
+        action: core.requests.InstanceActionRequest.Action.Start,
+      });
+      // console.log();
+      // await getListAllInstances(process.env.COMPARTMENTID as string);
+      console.log("job start")
+      // console.log('data', data);
+    },
+    { timezone: 'Asia/Bangkok' }
+  );
 
-//       // console.log('data', data);
-//     },
-//     { timezone: 'Asia/Bangkok' }
-//   );
-
-//   cronjob.start();
-// };
+  cronjob.start();
+};

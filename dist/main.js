@@ -12,10 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import { initCronJob } from './oci';
 const koa_1 = __importDefault(require("koa"));
 const koa_router_1 = __importDefault(require("koa-router"));
 const dotenv_1 = require("dotenv");
+const oci_1 = require("./oci");
+const oci_sdk_1 = require("oci-sdk");
+// import { initCronJob } from './oci';
 (0, dotenv_1.config)();
 // initCronJob();
 const port = process.env.PORT || 3000;
@@ -23,6 +25,10 @@ const app = new koa_1.default();
 const router = new koa_router_1.default();
 router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     ctx.body = `Healthy. Koa ${process.env.TENANCY || ''}`;
+    yield oci_1.computeClient.instanceAction({
+        instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
+        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
+    });
 }));
 app.use(router.routes());
 app.listen(port, () => {

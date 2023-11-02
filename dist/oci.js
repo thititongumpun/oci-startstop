@@ -12,9 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.initCronJob = void 0;
+exports.initCronJob = exports.computeClient = void 0;
 const oci_sdk_1 = require("oci-sdk");
-const fs_1 = require("fs");
+// import { readFileSync } from 'fs';
 const node_cron_1 = __importDefault(require("node-cron"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
@@ -55,14 +55,14 @@ A2Ss1Jt96Ctmk59n4RS9/3iswasFMzoqJ44RbJ0EurC1SpInhPeO
 `;
 const region = oci_sdk_1.common.Region.AP_SINGAPORE_1;
 const provider = new oci_sdk_1.common.SimpleAuthenticationDetailsProvider(tenancy, user, fingerprint, privateKey, passphrase, region);
-// const computeClient = new core.ComputeClient({
-//   authenticationDetailsProvider: provider,
-// });
-const instances = (0, fs_1.readFileSync)('./README.md', { encoding: 'utf8' });
-const data = instances
-    .split('\n')
-    .filter((line) => line.startsWith('- '))
-    .map((line) => line.split('- ')[1]);
+exports.computeClient = new oci_sdk_1.core.ComputeClient({
+    authenticationDetailsProvider: provider,
+});
+// const instances = readFileSync('./README.md', { encoding: 'utf8' });
+// const data = instances
+//   .split('\n')
+//   .filter((line) => line.startsWith('- '))
+//   .map((line) => line.split('- ')[1]);
 // async function getListAllInstances(compartmentId: string) {
 //   for await (const instance of computeClient.listAllInstances({
 //     compartmentId: compartmentId,
@@ -74,14 +74,14 @@ const data = instances
 // }
 const initCronJob = () => {
     const cronjob = node_cron_1.default.schedule('* * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
-        // await computeClient.instanceAction({
-        //   instanceId:
-        //     'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-        //   action: core.requests.InstanceActionRequest.Action.Stop,
-        // });
+        yield exports.computeClient.instanceAction({
+            instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
+            action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
+        });
         // console.log();
         // await getListAllInstances(process.env.COMPARTMENTID as string);
-        console.log('data', data);
+        console.log("job start");
+        // console.log('data', data);
     }), { timezone: 'Asia/Bangkok' });
     cronjob.start();
 };
