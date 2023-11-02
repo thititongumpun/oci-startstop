@@ -23,10 +23,15 @@ router.get('/', async (ctx: Koa.Context) => {
 });
 
 router.get('/raw', async (ctx: Koa.Context) => {
-  const data = await fetch('https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md?token=GHSAT0AAAAAACIPPH7W3MNZHZ5FSYKCDK2AZKDFOOA');
-  const text = await data.text()
-  ctx.body = text.split('\n').filter((line) => line.startsWith('- ')).map((line) => line.split('- ')[1]);
-})
+  const data = await fetch(
+    'https://raw.githubusercontent.com/thititongumpun/oci-startstop/master/README.md?token=GHSAT0AAAAAACIPPH7W3MNZHZ5FSYKCDK2AZKDFOOA'
+  );
+  const text = await data.text();
+  ctx.body = text
+    .split('\n')
+    .filter((line) => line.startsWith('- '))
+    .map((line) => line.split('- ')[1]);
+});
 
 app.use(router.routes());
 
