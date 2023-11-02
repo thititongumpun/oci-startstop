@@ -24,33 +24,21 @@ router.get('/', async (ctx: Koa.Context) => {
 
   const sgOCI = new Oci(common.Region.AP_SINGAPORE_1);
 
-  const computeWaiter = sgOCI
-    .getComputeClient()
-    .createWaiters(
-      sgOCI.getWorkerRequestClient(),
-      sgOCI.getWaiterConfiguration()
-    );
-
   for (const instance of sgInstances) {
-    const getInstanceRequest: core.requests.GetInstanceRequest = {
+    const instanceState = await sgOCI.getComputeClient().getInstance({
       instanceId: instance,
-    };
+    })
 
-    const getInstanceResponse = await computeWaiter.forInstance(
-      getInstanceRequest,
+    instanceState?.instance.lifecycleState ===
       core.models.Instance.LifecycleState.Stopped
-    );
-
-    getInstanceResponse?.instance.lifecycleState ===
-    core.models.Instance.LifecycleState.Stopped
       ? await sgOCI.getComputeClient().instanceAction({
-          instanceId: instance,
-          action: core.requests.InstanceActionRequest.Action.Start,
-        })
+        instanceId: instance,
+        action: core.requests.InstanceActionRequest.Action.Start,
+      })
       : await sgOCI.getComputeClient().instanceAction({
-          instanceId: instance,
-          action: core.requests.InstanceActionRequest.Action.Stop,
-        });
+        instanceId: instance,
+        action: core.requests.InstanceActionRequest.Action.Stop,
+      });
   }
 
   ctx.body = `Process Done. ${new Date().toString()}`;

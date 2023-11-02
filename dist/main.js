@@ -36,15 +36,11 @@ router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
         .filter((line) => line.startsWith('- '))
         .map((line) => line.split('- ')[1]);
     const sgOCI = new oci_1.default(oci_sdk_1.common.Region.AP_SINGAPORE_1);
-    const computeWaiter = sgOCI
-        .getComputeClient()
-        .createWaiters(sgOCI.getWorkerRequestClient(), sgOCI.getWaiterConfiguration());
     for (const instance of sgInstances) {
-        const getInstanceRequest = {
+        const instanceState = yield sgOCI.getComputeClient().getInstance({
             instanceId: instance,
-        };
-        const getInstanceResponse = yield computeWaiter.forInstance(getInstanceRequest, oci_sdk_1.core.models.Instance.LifecycleState.Stopped);
-        (getInstanceResponse === null || getInstanceResponse === void 0 ? void 0 : getInstanceResponse.instance.lifecycleState) ===
+        });
+        (instanceState === null || instanceState === void 0 ? void 0 : instanceState.instance.lifecycleState) ===
             oci_sdk_1.core.models.Instance.LifecycleState.Stopped
             ? yield sgOCI.getComputeClient().instanceAction({
                 instanceId: instance,
