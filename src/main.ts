@@ -18,12 +18,15 @@ router.get('/', async (ctx: Koa.Context) => {
   );
 
   const text = await res.text();
-  const instances = text.split('\n')
+  const instances = text
+    .split('\n')
     .filter((line) => line.startsWith('- '))
     .map((line) => line.split('- ')[1]);
 
-
-  const computeWaiter = computeClient.createWaiters(workRequestClient, waiterConfiguration);
+  const computeWaiter = computeClient.createWaiters(
+    workRequestClient,
+    waiterConfiguration
+  );
   for (const instance of instances) {
     await computeClient.instanceAction({
       instanceId: instance,
@@ -31,13 +34,13 @@ router.get('/', async (ctx: Koa.Context) => {
     });
 
     const getInstanceRequest: core.requests.GetInstanceRequest = {
-      instanceId: instance
+      instanceId: instance,
     };
 
     await computeWaiter.forInstance(
       getInstanceRequest,
       core.models.Instance.LifecycleState.Starting
-    )
+    );
   }
 });
 

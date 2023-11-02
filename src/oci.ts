@@ -53,8 +53,10 @@ export const computeClient = new core.ComputeClient({
 const maxTimeInSeconds = 60 * 60; // The duration for waiter configuration before failing. Currently set to 1 hour.
 const maxDelayInSeconds = 30; // The max delay for the waiter configuration. Currently set to 30 seconds
 
-export const workRequestClient = new WorkRequestClient({ authenticationDetailsProvider: provider });
+export const workRequestClient = new WorkRequestClient({
+  authenticationDetailsProvider: provider,
+});
 export const waiterConfiguration: common.WaiterConfiguration = {
   terminationStrategy: new common.MaxTimeTerminationStrategy(maxTimeInSeconds),
-  delayStrategy: new common.ExponentialBackoffDelayStrategy(maxDelayInSeconds)
+  delayStrategy: new common.ExponentialBackoffDelayStrategy(maxDelayInSeconds),
 };
