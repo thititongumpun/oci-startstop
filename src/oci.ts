@@ -1,5 +1,4 @@
 import { common, core } from 'oci-sdk';
-// import { readFileSync } from 'fs';
 import cron from 'node-cron';
 import { config } from 'dotenv';
 config();
@@ -8,9 +7,6 @@ const tenancy = process.env.TENANCY || '';
 const user = process.env.USER || '';
 const fingerprint = process.env.FINGERPRINT || '';
 const passphrase = process.env.PASSPHRASE || null; // optional parameter
-// const privateKey = readFileSync('./keys/secretKey.pem', {
-//   encoding: 'utf8',
-// });
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAvnBNd5+oaC7qXmw0TpF6lnq1RcRpUwvgP5DgJ3XbwgHooPPI
 oJmm4o1t6i0wwjlkFcHlba8j7B0Rtlol1j8tPPPkXuH8Cxa14GJFlAEVFNdIddy/
@@ -54,22 +50,6 @@ export const computeClient = new core.ComputeClient({
   authenticationDetailsProvider: provider,
 });
 
-// const instances = readFileSync('./README.md', { encoding: 'utf8' });
-// const data = instances
-//   .split('\n')
-//   .filter((line) => line.startsWith('- '))
-//   .map((line) => line.split('- ')[1]);
-
-// async function getListAllInstances(compartmentId: string) {
-//   for await (const instance of computeClient.listAllInstances({
-//     compartmentId: compartmentId,
-//   })) {
-//     console.log(
-//       `${instance.displayName} [${instance.id}] current status is ${instance.lifecycleState}`
-//     );
-//   }
-// }
-
 export const initCronJob = () => {
   const cronjob = cron.schedule(
     '* * * * *',
@@ -79,10 +59,6 @@ export const initCronJob = () => {
           'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
         action: core.requests.InstanceActionRequest.Action.Start,
       });
-      // console.log();
-      // await getListAllInstances(process.env.COMPARTMENTID as string);
-      console.log('job start');
-      // console.log('data', data);
     },
     { timezone: 'Asia/Bangkok' }
   );

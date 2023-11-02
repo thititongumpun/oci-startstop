@@ -17,9 +17,7 @@ const koa_router_1 = __importDefault(require("koa-router"));
 const dotenv_1 = require("dotenv");
 const oci_1 = require("./oci");
 const oci_sdk_1 = require("oci-sdk");
-// import { initCronJob } from './oci';
 (0, dotenv_1.config)();
-// initCronJob();
 const port = process.env.PORT || 3000;
 const app = new koa_1.default();
 const router = new koa_router_1.default();
@@ -27,7 +25,7 @@ router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
     ctx.body = `Healthy. ${new Date().toString()}`;
     yield oci_1.computeClient.instanceAction({
         instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Stop,
+        action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
     });
 }));
 router.get('/raw', (ctx) => __awaiter(void 0, void 0, void 0, function* () {

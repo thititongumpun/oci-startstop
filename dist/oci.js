@@ -14,7 +14,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initCronJob = exports.computeClient = void 0;
 const oci_sdk_1 = require("oci-sdk");
-// import { readFileSync } from 'fs';
 const node_cron_1 = __importDefault(require("node-cron"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
@@ -22,9 +21,6 @@ const tenancy = process.env.TENANCY || '';
 const user = process.env.USER || '';
 const fingerprint = process.env.FINGERPRINT || '';
 const passphrase = process.env.PASSPHRASE || null; // optional parameter
-// const privateKey = readFileSync('./keys/secretKey.pem', {
-//   encoding: 'utf8',
-// });
 const privateKey = `-----BEGIN RSA PRIVATE KEY-----
 MIIEowIBAAKCAQEAvnBNd5+oaC7qXmw0TpF6lnq1RcRpUwvgP5DgJ3XbwgHooPPI
 oJmm4o1t6i0wwjlkFcHlba8j7B0Rtlol1j8tPPPkXuH8Cxa14GJFlAEVFNdIddy/
@@ -58,30 +54,12 @@ const provider = new oci_sdk_1.common.SimpleAuthenticationDetailsProvider(tenanc
 exports.computeClient = new oci_sdk_1.core.ComputeClient({
     authenticationDetailsProvider: provider,
 });
-// const instances = readFileSync('./README.md', { encoding: 'utf8' });
-// const data = instances
-//   .split('\n')
-//   .filter((line) => line.startsWith('- '))
-//   .map((line) => line.split('- ')[1]);
-// async function getListAllInstances(compartmentId: string) {
-//   for await (const instance of computeClient.listAllInstances({
-//     compartmentId: compartmentId,
-//   })) {
-//     console.log(
-//       `${instance.displayName} [${instance.id}] current status is ${instance.lifecycleState}`
-//     );
-//   }
-// }
 const initCronJob = () => {
     const cronjob = node_cron_1.default.schedule('* * * * *', () => __awaiter(void 0, void 0, void 0, function* () {
         yield exports.computeClient.instanceAction({
             instanceId: 'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
             action: oci_sdk_1.core.requests.InstanceActionRequest.Action.Start,
         });
-        // console.log();
-        // await getListAllInstances(process.env.COMPARTMENTID as string);
-        console.log('job start');
-        // console.log('data', data);
     }), { timezone: 'Asia/Bangkok' });
     cronjob.start();
 };

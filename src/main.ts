@@ -3,10 +3,7 @@ import Router from 'koa-router';
 import { config } from 'dotenv';
 import { computeClient } from './oci';
 import { core } from 'oci-sdk';
-// import { initCronJob } from './oci';
 config();
-
-// initCronJob();
 
 const port = process.env.PORT || 3000;
 
@@ -18,7 +15,7 @@ router.get('/', async (ctx: Koa.Context) => {
   await computeClient.instanceAction({
     instanceId:
       'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-    action: core.requests.InstanceActionRequest.Action.Stop,
+    action: core.requests.InstanceActionRequest.Action.Start,
   });
 });
 
