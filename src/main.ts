@@ -14,11 +14,11 @@ const app = new Koa();
 const router: Router = new Router();
 
 router.get('/', async (ctx: Koa.Context) => {
-  ctx.body = `Healthy. Koa ${process.env.TENANCY || ''}`;
+  ctx.body = `Healthy. ${new Date().toString()}`;
   await computeClient.instanceAction({
     instanceId:
       'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-    action: core.requests.InstanceActionRequest.Action.Stop,
+    action: core.requests.InstanceActionRequest.Action.Start,
   });
 });
 
