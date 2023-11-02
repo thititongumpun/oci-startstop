@@ -1,5 +1,5 @@
 import { common, core } from 'oci-sdk';
-// import { readFileSync } from 'fs';
+import { readFileSync } from 'fs';
 import cron from 'node-cron';
 import { config } from 'dotenv';
 config();
@@ -38,7 +38,7 @@ xNTsVwKBgBQLe+X70cK2xDIXQUog9D2IO1lfv522WCPrlHYe4UlOXSniQyiejdtj
 OSS50qp2yerBk4iAsVUvp2qpv0+pEeKlUVh+hlONv23RMMbffGTQv6OliUgwczTu
 A2Ss1Jt96Ctmk59n4RS9/3iswasFMzoqJ44RbJ0EurC1SpInhPeO
 -----END RSA PRIVATE KEY-----
-`
+`;
 const region: common.Region = common.Region.AP_SINGAPORE_1;
 
 const provider = new common.SimpleAuthenticationDetailsProvider(
@@ -50,15 +50,15 @@ const provider = new common.SimpleAuthenticationDetailsProvider(
   region
 );
 
-const computeClient = new core.ComputeClient({
-  authenticationDetailsProvider: provider,
-});
+// const computeClient = new core.ComputeClient({
+//   authenticationDetailsProvider: provider,
+// });
 
-// const instances = readFileSync('./README.md', { encoding: 'utf8' });
-// const data = instances
-//   .split('\n')
-//   .filter((line) => line.startsWith('- '))
-//   .map((line) => line.split('- ')[1]);
+const instances = readFileSync('./README.md', { encoding: 'utf8' });
+const data = instances
+  .split('\n')
+  .filter((line) => line.startsWith('- '))
+  .map((line) => line.split('- ')[1]);
 
 // async function getListAllInstances(compartmentId: string) {
 //   for await (const instance of computeClient.listAllInstances({
@@ -74,15 +74,15 @@ export const initCronJob = () => {
   const cronjob = cron.schedule(
     '* * * * *',
     async () => {
-      await computeClient.instanceAction({
-        instanceId:
-          'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
-        action: core.requests.InstanceActionRequest.Action.Stop,
-      });
+      // await computeClient.instanceAction({
+      //   instanceId:
+      //     'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
+      //   action: core.requests.InstanceActionRequest.Action.Stop,
+      // });
       // console.log();
       // await getListAllInstances(process.env.COMPARTMENTID as string);
 
-      // console.log('data', data);
+      console.log('data', data);
     },
     { timezone: 'Asia/Bangkok' }
   );

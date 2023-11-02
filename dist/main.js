@@ -12,17 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const oci_1 = require("./oci");
+// import { initCronJob } from './oci';
 const koa_1 = __importDefault(require("koa"));
 const koa_router_1 = __importDefault(require("koa-router"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
-(0, oci_1.initCronJob)();
+// initCronJob();
 const port = process.env.PORT || 3000;
 const app = new koa_1.default();
 const router = new koa_router_1.default();
 router.get('/', (ctx) => __awaiter(void 0, void 0, void 0, function* () {
-    ctx.body = 'Healthy. Koa';
+    ctx.body = `Healthy. Koa ${process.env.TENANCY || ''}`;
 }));
 app.use(router.routes());
 app.listen(port, () => {
