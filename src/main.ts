@@ -1,12 +1,11 @@
-// import { initCronJob } from './oci';
+import { initCronJob } from './oci';
 import Koa from 'koa';
 import Router from 'koa-router';
 import { config } from 'dotenv';
 config();
 
-// initCronJob();
+initCronJob();
 
-// const app: Express = express();
 const port = process.env.PORT || 3000;
 
 const app = new Koa();

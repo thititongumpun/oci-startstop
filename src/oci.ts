@@ -47,9 +47,10 @@ export const initCronJob = () => {
     '* * * * *',
     async () => {
       await computeClient.instanceAction({
-        instanceId: "ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq",
-        action: core.requests.InstanceActionRequest.Action.Stop
-      })
+        instanceId:
+          'ocid1.instance.oc1.ap-singapore-1.anzwsljrk644ttqcbsuzb5i34owl7zkwexpehfsweqrpbgbkdjkh34ubzuvq',
+        action: core.requests.InstanceActionRequest.Action.Stop,
+      });
       // console.log();
       // await getListAllInstances(process.env.COMPARTMENTID as string);
 

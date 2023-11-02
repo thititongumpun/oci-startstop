@@ -12,13 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// import { initCronJob } from './oci';
+const oci_1 = require("./oci");
 const koa_1 = __importDefault(require("koa"));
 const koa_router_1 = __importDefault(require("koa-router"));
 const dotenv_1 = require("dotenv");
 (0, dotenv_1.config)();
-// initCronJob();
-// const app: Express = express();
+(0, oci_1.initCronJob)();
 const port = process.env.PORT || 3000;
 const app = new koa_1.default();
 const router = new koa_router_1.default();
